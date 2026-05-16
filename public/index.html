@@ -20,7 +20,7 @@
         // KISAN MADAD: Supabase Client Configuration
         const SUPABASE_URL = "https://your-project-url.supabase.co"; // Placeholder
         const SUPABASE_ANON_KEY = "your-anon-key"; // Placeholder
-        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     </script>
 
     <script id="tailwind-config">
@@ -161,9 +161,19 @@
     <div id="root"></div>
 
     <script type="text/babel">
-        const { useState, useEffect } = React;
+        const { useState, useEffect, Fragment } = React;
         const { createRoot } = ReactDOM;
         const { MemoryRouter, Routes, Route, Link, useNavigate, useLocation } = ReactRouterDOM;
+
+        // --- Helper: Heartbeat Hook ---
+        const useHeartbeat = () => {
+            const [time, setTime] = useState(new Date().toLocaleTimeString());
+            useEffect(() => {
+                const i = setInterval(() => setTime(new Date().toLocaleTimeString()), 1000);
+                return () => clearInterval(i);
+            }, []);
+            return time;
+        };
 
         // --- Common Components ---
 
@@ -213,6 +223,7 @@
 
         const TopHeader = () => {
             const navigate = useNavigate();
+            const time = useHeartbeat();
             return (
                 <header className="flex justify-between items-center w-full px-container-margin py-4 bg-surface/60 backdrop-blur-xl border-b border-white/10 sticky top-0 z-40">
                     <div className="flex items-center gap-8">
@@ -223,6 +234,10 @@
                         </div>
                     </div>
                     <div className="flex items-center gap-6">
+                        <div className="text-right hidden sm:block">
+                            <p className="text-[10px] text-primary-fixed-dim font-bold tracking-widest uppercase">System Heartbeat</p>
+                            <p className="text-xs font-mono opacity-80">{time}</p>
+                        </div>
                         <div className="flex gap-4">
                             <span className="material-symbols-outlined text-on-surface-variant hover:text-primary-fixed cursor-pointer">language</span>
                             <span className="material-symbols-outlined text-on-surface-variant hover:text-primary-fixed cursor-pointer">notifications</span>
@@ -274,7 +289,7 @@
             useEffect(() => {
                 async function fetchFieldStats() {
                     try {
-                        const { data } = await supabase.from('fields').select('*').limit(1);
+                        const { data } = await supabaseClient.from('fields').select('*').limit(1);
                         if (data && data[0]) {
                             setFieldData({
                                 temp: `${data[0].temperature}°C`,
@@ -467,7 +482,7 @@
                 e.preventDefault();
                 setStatus('broadcasting');
                 try {
-                    const { error } = await supabase
+                    const { error } = await supabaseClient
                         .from('requirements')
                         .insert([{ 
                             crop_type: newReq.crop, 
@@ -674,14 +689,14 @@
                                 <img className="w-full md:w-1/3 h-48 md:h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC1XYyCxAEa1oUnBI94dWckKUb_gaIP9F6VgXEnmxgWiY3Jn1N20Qrd06Cv_NEeRYISSmTXh4pydehqrxWhSvv0OYqtZnPEtjz2Cy3nIrESloZDcFL4h_95_Ow6dqMuSosiphfR6G3oFtG0QeztHQjmKtEEIU0WctJ6vVyfCKtarG1GlRW3h23CQ_hvX4q2fAN22T4A3vneotphXVR5fY0iWdymLXx41fXxJCP0nbt1CIsDE9Tuyn_3Zxl0L97LwT2ShLMCoGyLOmNi" alt="Leaf" />
                                 <div className="p-6 flex-1">
                                     {diagnosis ? (
-                                        <>
+                                        <Fragment>
                                             <span className="bg-error-container text-on-error px-3 py-1 rounded-full text-xs font-bold uppercase">{diagnosis.severity} DETECTED</span>
                                             <h3 className="text-2xl font-bold text-primary-fixed-dim mt-2">{diagnosis.disease}</h3>
                                             <div className="mt-4 p-4 bg-surface-container rounded-lg">
                                                 <p className="font-bold">AI Recommendation</p>
                                                 <p className="text-sm text-on-surface-variant">{diagnosis.recommendation}</p>
                                             </div>
-                                        </>
+                                        </Fragment>
                                     ) : (
                                         <div className="flex flex-col items-center justify-center h-full text-on-surface-variant italic">
                                             Waiting for scan analysis...
@@ -708,7 +723,7 @@
             useEffect(() => {
                 async function fetchMatches() {
                     try {
-                        const { data, error } = await supabase
+                        const { data, error } = await supabaseClient
                             .from('contracts')
                             .select('*, profiles!company_id(full_name)')
                             .eq('status', 'pending');
