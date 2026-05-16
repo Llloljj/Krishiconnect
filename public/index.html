@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Krishi Connect AI - Agriculture Intelligence Network</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/history@5/umd/history.development.js"></script>
+    <script src="https://unpkg.com/react-router@6.3.0/umd/react-router.development.js"></script>
+    <script src="https://unpkg.com/react-router-dom@6.3.0/umd/react-router-dom.development.js"></script>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+    <script id="supabase-init">
+        // KISAN MADAD: Supabase Client Configuration
+        const SUPABASE_URL = "https://your-project-url.supabase.co"; // Placeholder
+        const SUPABASE_ANON_KEY = "your-anon-key"; // Placeholder
+        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    </script>
+
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed-variant": "#005228",
+                        "inverse-on-surface": "#293233",
+                        "surface": "#0c1516",
+                        "error": "#ffb4ab",
+                        "primary-fixed-dim": "#00ff88",
+                        "surface-dim": "#0c1516",
+                        "on-primary-container": "#007139",
+                        "on-surface-variant": "#b9cbb9",
+                        "on-tertiary-fixed": "#261900",
+                        "surface-container-high": "#222c2d",
+                        "on-tertiary-fixed-variant": "#5d4200",
+                        "tertiary-container": "#ffd994",
+                        "secondary-container": "#00e0ff",
+                        "background": "#0c1516",
+                        "secondary-fixed-dim": "#00daf8",
+                        "inverse-surface": "#dae4e5",
+                        "surface-container": "#182122",
+                        "surface-container-highest": "#2d3637",
+                        "surface-tint": "#00e479",
+                        "secondary-fixed": "#a5eeff",
+                        "surface-variant": "#2d3637",
+                        "on-tertiary": "#412d00",
+                        "on-primary-fixed": "#00210c",
+                        "primary-container": "#00ff88",
+                        "on-secondary-fixed-variant": "#004e5a",
+                        "on-secondary": "#00363f",
+                        "on-error": "#690005",
+                        "on-primary": "#003919",
+                        "error-container": "#93000a",
+                        "on-tertiary-container": "#7f5c00",
+                        "inverse-primary": "#006d37",
+                        "primary": "#f1ffef",
+                        "surface-container-lowest": "#071011",
+                        "surface-container-low": "#141d1e",
+                        "on-error-container": "#ffdad6",
+                        "outline": "#849585",
+                        "on-secondary-container": "#005f6d",
+                        "tertiary": "#fffaf7",
+                        "primary-fixed": "#60ff99",
+                        "secondary": "#b9f1ff",
+                        "tertiary-fixed-dim": "#ffbb00",
+                        "outline-variant": "#3b4b3d",
+                        "surface-bright": "#313b3c",
+                        "on-surface": "#dae4e5",
+                        "tertiary-fixed": "#ffdea4",
+                        "on-secondary-fixed": "#001f25",
+                        "on-background": "#dae4e5"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "16px",
+                        "stack-sm": "8px",
+                        "card-padding": "24px",
+                        "container-margin": "24px",
+                        "stack-md": "16px",
+                        "unit": "8px",
+                        "stack-lg": "32px"
+                    },
+                    "fontFamily": {
+                        "sans": ["Inter", "sans-serif"],
+                        "body-lg": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "body-md": ["Inter"]
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        .glass-card, .glass-panel {
+            background: rgba(24, 33, 34, 0.6);
+            backdrop-filter: blur(16px);
+            border: 0.5px solid rgba(255, 255, 255, 0.1);
+        }
+        .bloom-primary:hover {
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+            border-color: rgba(0, 255, 136, 0.5);
+        }
+        .breathing {
+            animation: pulse 2s infinite ease-in-out;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+        .ai-waveform {
+            height: 24px;
+            display: flex;
+            align-items: center;
+            gap: 2px;
+        }
+        .waveform-bar {
+            width: 2px;
+            background: #00ff88;
+            border-radius: 1px;
+            animation: wave 1s infinite ease-in-out;
+        }
+        @keyframes wave {
+            0%, 100% { height: 4px; }
+            50% { height: 16px; }
+        }
+        .glowing-btn {
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
+            transition: all 0.3s ease;
+        }
+        .glowing-btn:hover {
+            box-shadow: 0 0 25px rgba(0, 255, 136, 0.6);
+            transform: scale(1.02);
+        }
+        .neon-glow-text {
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+        }
+        .ai-orb {
+            background: radial-gradient(circle, rgba(0, 255, 136, 0.4) 0%, rgba(0, 255, 136, 0) 70%);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md min-h-screen">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+        const { createRoot } = ReactDOM;
+        const { MemoryRouter, Routes, Route, Link, useNavigate, useLocation } = ReactRouterDOM;
+
+        // --- Common Components ---
+
+        const Sidebar = ({ active }) => {
+            const navigate = useNavigate();
+            return (
+                <aside className="hidden md:flex flex-col h-screen w-72 left-0 fixed border-r border-white/10 bg-surface-container/80 backdrop-blur-2xl py-6 gap-stack-md z-50 overflow-y-auto">
+                    <div className="px-6 mb-8 cursor-pointer" onClick={() => navigate('/')}>
+                        <h1 className="font-headline-md text-headline-md text-primary-fixed-dim flex items-center gap-2">
+                            <span className="material-symbols-outlined" style={{fontVariationSettings: "'FILL' 1"}}>psychology</span>
+                            Krishi AI
+                        </h1>
+                        <p className="font-body-sm text-on-surface-variant opacity-70">Autonomous Mode: Active</p>
+                    </div>
+                    <nav className="flex-grow flex flex-col px-4 gap-2">
+                        <Link to="/farmer" className={`flex items-center gap-4 px-4 py-3 rounded-full transition-all duration-200 ${active === 'farmer' ? 'bg-primary-container/20 text-primary-fixed-dim border-l-4 border-primary-fixed-dim' : 'text-on-surface-variant hover:bg-white/5'}`}>
+                            <span className="material-symbols-outlined">dashboard</span>
+                            Field Overview
+                        </Link>
+                        <Link to="/ai-assistant" className={`flex items-center gap-4 px-4 py-3 rounded-full transition-all duration-200 ${active === 'ai' ? 'bg-primary-container/20 text-primary-fixed-dim border-l-4 border-primary-fixed-dim' : 'text-on-surface-variant hover:bg-white/5'}`}>
+                            <span className="material-symbols-outlined">psychology</span>
+                            AI Insights
+                        </Link>
+                        <Link to="/matching" className={`flex items-center gap-4 px-4 py-3 rounded-full transition-all duration-200 ${active === 'matching' ? 'bg-primary-container/20 text-primary-fixed-dim border-l-4 border-primary-fixed-dim' : 'text-on-surface-variant hover:bg-white/5'}`}>
+                            <span className="material-symbols-outlined">hub</span>
+                            Matching Engine
+                        </Link>
+                        <Link to="/company" className={`flex items-center gap-4 px-4 py-3 rounded-full transition-all duration-200 ${active === 'company' ? 'bg-primary-container/20 text-primary-fixed-dim border-l-4 border-primary-fixed-dim' : 'text-on-surface-variant hover:bg-white/5'}`}>
+                            <span className="material-symbols-outlined">corporate_fare</span>
+                            Marketplace
+                        </Link>
+                    </nav>
+                    <div className="px-6 mb-4">
+                        <button className="w-full py-3 rounded-full bg-primary-fixed-dim text-on-primary font-label-md shadow-[0_0_20px_rgba(0,255,136,0.4)] hover:scale-95 active:scale-90 transition-transform">
+                            Deploy Drone
+                        </button>
+                    </div>
+                    <div className="px-4 flex flex-col gap-2 border-t border-white/5 pt-4">
+                        <div className="flex items-center gap-4 px-4 py-2 text-on-surface-variant hover:bg-white/5 rounded-full cursor-pointer transition-all">
+                            <span className="material-symbols-outlined">settings</span>
+                            Settings
+                        </div>
+                    </div>
+                </aside>
+            );
+        };
+
+        const TopHeader = () => {
+            const navigate = useNavigate();
+            return (
+                <header className="flex justify-between items-center w-full px-container-margin py-4 bg-surface/60 backdrop-blur-xl border-b border-white/10 sticky top-0 z-40">
+                    <div className="flex items-center gap-8">
+                        <span onClick={() => navigate('/')} className="font-display-lg text-display-lg font-extrabold text-primary-fixed-dim tracking-tighter md:hidden cursor-pointer">KAI</span>
+                        <div className="hidden md:flex items-center bg-surface-container-highest px-4 py-2 rounded-full border border-white/5">
+                            <span className="material-symbols-outlined text-on-surface-variant mr-2">search</span>
+                            <input className="bg-transparent border-none focus:ring-0 text-body-md w-64 text-on-surface" placeholder="Analyze crop data..." type="text"/>
+                        </div>
+                    </div>
+                    <div className="flex items-center gap-6">
+                        <div className="flex gap-4">
+                            <span className="material-symbols-outlined text-on-surface-variant hover:text-primary-fixed cursor-pointer">language</span>
+                            <span className="material-symbols-outlined text-on-surface-variant hover:text-primary-fixed cursor-pointer">notifications</span>
+                        </div>
+                        <img alt="User" className="w-10 h-10 rounded-full border border-primary-fixed-dim/30" src="https://lh3.googleusercontent.com/aida-public/AB6AXuATDzfIXybx3xKlA-rG40wIgKk9QQ58IGOLHFgGhnOjsLE4XHRvdXpQOgMQRf_YiVabX6jp1_iTxGEV30Rv_VNT1IHFgkldCThn0VLQVMznrrhzjsXeGtZt1Vrrsxa_JiHN-PD3kCGndfJ5PmPxq4nrNBFoufLz61uXF3P9431YlElU1BkJ3hRwx2_gD_Znc3HlavBSpV7LMZ-pzqcx7_OqjQgKrOL_yFfOJSLwd3Ehvnwt_bRtaiLbCFMYilWsLzmgLSJvk6NJxPQA"/>
+                    </div>
+                </header>
+            );
+        };
+
+        const MobileNav = () => (
+            <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-surface-container/90 backdrop-blur-xl border-t border-white/10 flex justify-around items-center py-4 px-6 z-50">
+                <Link to="/farmer" className="text-on-surface-variant flex flex-col items-center">
+                    <span className="material-symbols-outlined">dashboard</span>
+                    <span className="text-[10px] mt-1">Fields</span>
+                </Link>
+                <Link to="/ai-assistant" className="text-on-surface-variant flex flex-col items-center">
+                    <span className="material-symbols-outlined">psychology</span>
+                    <span className="text-[10px] mt-1">AI</span>
+                </Link>
+                <div className="relative -top-8">
+                    <div className="w-14 h-14 bg-primary-fixed-dim rounded-full shadow-[0_0_20px_rgba(0,255,136,0.5)] flex items-center justify-center">
+                        <span className="material-symbols-outlined text-on-primary text-3xl">add_a_photo</span>
+                    </div>
+                </div>
+                <Link to="/company" className="text-on-surface-variant flex flex-col items-center">
+                    <span className="material-symbols-outlined">trending_up</span>
+                    <span className="text-[10px] mt-1">Market</span>
+                </Link>
+                <Link to="/matching" className="text-on-surface-variant flex flex-col items-center">
+                    <span className="material-symbols-outlined">hub</span>
+                    <span className="text-[10px] mt-1">Match</span>
+                </Link>
+            </nav>
+        );
+
+        // --- Screen 1: Farmer Dashboard ---
+        const FarmerDashboard = () => {
+            const [fieldData, setFieldData] = useState({
+                temp: '28°C', humidity: '64%', pH: '6.8', rainfall: '12mm'
+            });
+            const [profile, setProfile] = useState({ name: 'Arvind Kumar', location: 'Punjab, India' });
+            const [loading, setLoading] = useState(true);
+            
+            // Drone Advancement Logic
+            const [droneStatus, setDroneStatus] = useState({ active: false, battery: 100, payload: 100, altitude: 0, drones: [] });
+            const [missionType, setMissionType] = useState(null);
+
+            useEffect(() => {
+                async function fetchFieldStats() {
+                    try {
+                        const { data } = await supabase.from('fields').select('*').limit(1);
+                        if (data && data[0]) {
+                            setFieldData({
+                                temp: `${data[0].temperature}°C`,
+                                humidity: `${data[0].humidity}%`,
+                                pH: data[0].soil_ph,
+                                rainfall: '12mm'
+                            });
+                        }
+                    } catch (err) { console.log("Demo mode active"); } finally { setLoading(false); }
+                }
+                fetchFieldStats();
+            }, []);
+
+            // Real-time Drone Telemetry Stream
+            useEffect(() => {
+                const interval = setInterval(async () => {
+                    try {
+                        const res = await fetch('/api/drone/status');
+                        const data = await res.json();
+                        setDroneStatus(data);
+                    } catch (err) { console.log("Offline telemetry simulation."); }
+                }, 1000);
+                return () => clearInterval(interval);
+            }, []);
+
+            const launchSwarm = async (type) => {
+                setMissionType(type);
+                try {
+                    await fetch('/api/drone/launch', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ type })
+                    });
+                } catch (err) { console.log("Mission initiated offline."); }
+            };
+
+            return (
+                <div className="md:ml-72 flex flex-col min-h-screen">
+                    <TopHeader />
+                    <main className="flex-grow p-container-margin max-w-7xl mx-auto w-full space-y-stack-lg pb-24 md:pb-8">
+                        <section className="grid grid-cols-1 lg:grid-cols-3 gap-stack-md">
+                            <div className="lg:col-span-2 glass-card rounded-lg p-card-padding relative overflow-hidden group bloom-primary transition-all duration-300">
+                                <h2 className="font-headline-lg text-headline-lg text-primary-fixed-dim mb-2">
+                                    {loading ? 'Analyzing...' : `Welcome Back, ${profile.name.split(' ')[0]}`}
+                                </h2>
+                                <p className="font-body-lg text-on-surface-variant mb-6">Northern Field sensors are reporting optimal soil moisture levels.</p>
+                                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                                    {[
+                                        {l: 'Temp', v: fieldData.temp}, 
+                                        {l: 'Humidity', v: fieldData.humidity}, 
+                                        {l: 'Soil pH', v: fieldData.pH}, 
+                                        {l: 'Rain Fall', v: fieldData.rainfall}
+                                    ].map((s, i) => (
+                                        <div key={i} className="bg-white/5 rounded-2xl p-4 border border-white/5">
+                                            <p className="font-label-sm text-on-surface-variant uppercase tracking-wider mb-1">{s.l}</p>
+                                            <p className="font-headline-md text-headline-md">{s.v}</p>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                            <div className="glass-card rounded-lg p-card-padding flex flex-col items-center justify-center text-center space-y-stack-md bloom-primary">
+                                <h3 className="font-headline-md text-primary-fixed-dim">AI Assistant</h3>
+                                <div className="w-20 h-20 bg-primary-fixed-dim rounded-full flex items-center justify-center shadow-lg cursor-pointer">
+                                    <span className="material-symbols-outlined text-on-primary text-4xl">mic</span>
+                                </div>
+                                <div className="ai-waveform">
+                                    {[40, 70, 100, 60, 80].map((h, i) => <div key={i} className="waveform-bar" style={{height: `${h}%`}}></div>)}
+                                </div>
+                                <p className="font-body-md text-on-surface-variant italic">"Launch irrigation drone swarm"</p>
+                            </div>
+                        </section>
+
+                        {/* ADVANCEMENT: Drone Mission Control UI */}
+                        <section className="grid grid-cols-1 lg:grid-cols-12 gap-stack-md">
+                            <div className="lg:col-span-8 glass-card rounded-lg p-card-padding relative min-h-[350px] overflow-hidden">
+                                <div className="flex justify-between items-center mb-6">
+                                    <h3 className="font-headline-md text-white">Autonomous Mission Control</h3>
+                                    <div className="flex gap-4">
+                                        <span className={`px-3 py-1 rounded-full text-xs font-bold ${droneStatus.active ? 'bg-primary-fixed-dim text-on-primary animate-pulse' : 'bg-white/10 text-on-surface-variant'}`}>
+                                            {droneStatus.active ? `ACTIVE MISSION: ${missionType}` : 'SWARM READY'}
+                                        </span>
+                                    </div>
+                                </div>
+                                
+                                {/* Swarm Map Visualizer */}
+                                <div className="relative w-full h-[200px] bg-white/5 rounded-xl border border-white/10 overflow-hidden mb-6">
+                                    <div className="absolute inset-0 opacity-20" style={{backgroundImage: 'radial-gradient(circle, #00ff88 1px, transparent 1px)', backgroundSize: '20px 20px'}}></div>
+                                    {droneStatus.drones.map((d, i) => (
+                                        <div 
+                                            key={i} 
+                                            className="absolute transition-all duration-1000 ease-in-out"
+                                            style={{left: `${d.x}%`, top: `${d.y}%` }}
+                                        >
+                                            <div className="relative">
+                                                <span className="material-symbols-outlined text-primary-fixed-dim text-xl">airplanemode_active</span>
+                                                <div className="absolute -inset-2 bg-primary-fixed-dim/20 rounded-full animate-ping"></div>
+                                                <p className="absolute top-6 left-0 text-[8px] whitespace-nowrap opacity-60">{d.id}</p>
+                                            </div>
+                                        </div>
+                                    ))}
+                                    {!droneStatus.active && (
+                                        <div className="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+                                            <button 
+                                                onClick={() => launchSwarm('IRRIGATION')}
+                                                className="bg-primary-fixed-dim text-on-primary px-8 py-3 rounded-full font-bold hover:scale-105 transition-all shadow-[0_0_30px_rgba(0,255,136,0.4)]"
+                                            >
+                                                Deploy Swarm Beta
+                                            </button>
+                                        </div>
+                                    )}
+                                </div>
+
+                                <div className="grid grid-cols-3 gap-4">
+                                    <div className="bg-white/5 p-4 rounded-lg border border-white/5">
+                                        <p className="text-[10px] text-on-surface-variant uppercase mb-1">Battery</p>
+                                        <div className="flex items-center gap-2">
+                                            <div className="flex-grow h-1.5 bg-white/10 rounded-full overflow-hidden">
+                                                <div className="h-full bg-primary-fixed-dim" style={{width: `${droneStatus.battery}%`}}></div>
+                                            </div>
+                                            <span className="text-sm font-bold">{Math.round(droneStatus.battery)}%</span>
+                                        </div>
+                                    </div>
+                                    <div className="bg-white/5 p-4 rounded-lg border border-white/5">
+                                        <p className="text-[10px] text-on-surface-variant uppercase mb-1">Payload</p>
+                                        <p className="text-xl font-bold text-secondary-fixed-dim">{Math.round(droneStatus.payload)}L</p>
+                                    </div>
+                                    <div className="bg-white/5 p-4 rounded-lg border border-white/5">
+                                        <p className="text-[10px] text-on-surface-variant uppercase mb-1">Altitude</p>
+                                        <p className="text-xl font-bold text-tertiary-fixed-dim">{droneStatus.altitude}m</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="lg:col-span-4 glass-card rounded-lg p-card-padding flex flex-col">
+                                <h3 className="font-bold mb-4">Mission Telemetry</h3>
+                                <div className="flex-grow space-y-4 font-mono text-[10px] text-primary-fixed-dim/70">
+                                    <p>[18:42:01] Swarm-Beta Initialization...</p>
+                                    <p>[18:42:05] GPS Lock: 31.6223° N, 74.8753° E</p>
+                                    <p>[18:42:10] Pre-flight systems: OPTIMAL</p>
+                                    {droneStatus.active && (
+                                        <>
+                                            <p className="text-primary-fixed-dim">[18:42:15] DEPLOYMENT SUCCESSFUL</p>
+                                            <p className="text-primary-fixed-dim">[18:42:20] Executing Sector-4 Spray Path...</p>
+                                            <p className="text-primary-fixed-dim animate-pulse">>>> REAL-TIME FEED ACTIVE</p>
+                                        </>
+                                    )}
+                                </div>
+                                <button className="mt-4 w-full py-2 rounded-full border border-error/50 text-error text-xs font-bold hover:bg-error/10 transition-all">
+                                    Emergency Dock
+                                </button>
+                            </div>
+                        </section>
+
+                        <div className="grid grid-cols-1 md:grid-cols-12 gap-stack-md">
+                            <section className="md:col-span-8 space-y-stack-md">
+                                <div className="glass-card rounded-lg p-card-padding">
+                                    <h3 className="font-headline-md text-primary-fixed-dim mb-4">Farmer Profile</h3>
+                                    <form className="grid grid-cols-1 sm:grid-cols-2 gap-stack-md" onSubmit={(e) => e.preventDefault()}>
+                                        <input className="bg-surface-container-lowest border-0 border-b-2 border-outline-variant focus:border-primary-fixed-dim focus:ring-0 rounded-t-lg px-4 py-3" placeholder="Full Name" type="text" value={profile.name} onChange={(e) => setProfile({...profile, name: e.target.value})} />
+                                        <input className="bg-surface-container-lowest border-0 border-b-2 border-outline-variant focus:border-primary-fixed-dim focus:ring-0 rounded-t-lg px-4 py-3" placeholder="Location" type="text" value={profile.location} onChange={(e) => setProfile({...profile, location: e.target.value})} />
+                                        <div className="sm:col-span-2 flex justify-end gap-4 mt-4">
+                                            <button className="px-8 py-2 rounded-full bg-primary-fixed-dim text-on-primary font-bold hover:opacity-80 transition-all">Save Changes</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </section>
+                            <aside className="md:col-span-4 space-y-stack-md">
+                                <div className="glass-card rounded-lg p-card-padding border-l-4 border-error/50">
+                                    <h3 className="font-label-md text-error mb-2">Critical Alerts</h3>
+                                    <div className="p-3 bg-error-container/10 rounded-xl border border-error/10 text-sm">
+                                        Leaf Rust suspected in Field Alpha Sector 4. Krishi AI recommends fungicide spray CC-24.
+                                    </div>
+                                </div>
+                            </aside>
+                        </div>
+                    </main>
+                    <Sidebar active="farmer" />
+                    <MobileNav />
+                </div>
+            );
+        };
+
+        // --- Screen 2: Company Dashboard ---
+        const CompanyDashboard = () => {
+            const [requirements, setRequirements] = useState([]);
+            const [newReq, setNewReq] = useState({ crop: 'Basmati Rice', tons: '' });
+            const [status, setStatus] = useState('idle');
+
+            const handleBroadcast = async (e) => {
+                e.preventDefault();
+                setStatus('broadcasting');
+                try {
+                    const { error } = await supabase
+                        .from('requirements')
+                        .insert([{ 
+                            crop_type: newReq.crop, 
+                            quantity_tons: parseFloat(newReq.tons) 
+                        }]);
+                    if (!error) {
+                        alert("AI Broadcast Sent! Scanning for Farmer matches...");
+                        setNewReq({ ...newReq, tons: '' });
+                    }
+                } catch (err) {
+                    console.log("Offline mode: Simulation complete.");
+                } finally {
+                    setStatus('idle');
+                }
+            };
+
+            return (
+                <div className="md:ml-72 flex flex-col min-h-screen">
+                    <TopHeader />
+                    <main className="flex-grow p-container-margin max-w-7xl mx-auto w-full space-y-stack-lg pb-24 md:pb-8">
+                        <div className="grid grid-cols-1 md:grid-cols-4 gap-stack-md">
+                            {[
+                                {l: 'Active Contracts', v: '2,482', c: 'text-primary-fixed-dim'},
+                                {l: 'Yield Forecast', v: '45.8k Tons', c: 'text-secondary-fixed-dim'},
+                                {l: 'Farmer Network', v: '8,912', c: 'text-tertiary-fixed-dim'},
+                                {l: 'Volatility', v: 'Low (2.4%)', c: 'text-error'}
+                            ].map((s, i) => (
+                                <div key={i} className="glass-card p-card-padding rounded-lg">
+                                    <p className="text-xs text-on-surface-variant uppercase mb-2">{s.l}</p>
+                                    <p className={`text-3xl font-extrabold ${s.c}`}>{s.v}</p>
+                                </div>
+                            ))}
+                        </div>
+                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-stack-lg">
+                            <section className="lg:col-span-2 glass-card p-card-padding rounded-lg">
+                                <h3 className="font-headline-md text-white mb-6">Post Requirement</h3>
+                                <form className="grid grid-cols-1 md:grid-cols-2 gap-stack-md" onSubmit={handleBroadcast}>
+                                    <select 
+                                        className="bg-surface-container border-white/10 rounded-full text-on-surface p-4"
+                                        value={newReq.crop}
+                                        onChange={(e) => setNewReq({...newReq, crop: e.target.value})}
+                                    >
+                                        <option>Basmati Rice</option>
+                                        <option>Organic Wheat</option>
+                                        <option>Mustard Seeds</option>
+                                    </select>
+                                    <input 
+                                        className="bg-surface-container border-white/10 rounded-full p-4 text-on-surface" 
+                                        placeholder="Metric Tons" 
+                                        type="number" 
+                                        value={newReq.tons}
+                                        onChange={(e) => setNewReq({...newReq, tons: e.target.value})}
+                                        required
+                                    />
+                                    <button 
+                                        className={`md:col-span-2 py-4 bg-primary-fixed-dim text-on-primary font-bold rounded-full mt-4 transition-all ${status === 'broadcasting' ? 'opacity-50 scale-95' : 'hover:scale-[1.02]'}`}
+                                        disabled={status === 'broadcasting'}
+                                    >
+                                        {status === 'broadcasting' ? 'Broadcasting to Network...' : 'Broadcast AI Matchmaking'}
+                                    </button>
+                                </form>
+                            </section>
+                            <aside className="glass-card p-card-padding rounded-lg">
+                                <h3 className="text-white mb-4">Market Demand</h3>
+                                <img className="rounded-lg opacity-60 mb-4" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAeZUYSC27juGq0nZJWVkf-QIBhfWePzJCTJR7pq0kGLtbls4-2oBKmtvTUhsvii6LeICQPgI71NWNhyo8PECaKNm9Z9e-ALOpGDRCdYj7vcf6y8SqFTNO8J0e6c3kMeB83IsCcNGF2cjOkWeUGxKxBbSsnbgfQsjJ-jFAIT3CMkuIOc36tr2iyO8ITnSPd3yHixYJ97pvKuZTxFWec-mDP4DR-8-nL1iDr1xQ8060c5z74pZDmt4j4LcZwC7mfeU76c-BuCGLxRhbw" alt="Map" />
+                                <div className="text-primary-fixed-dim font-bold">European Wheat Shortage</div>
+                            </aside>
+                        </div>
+                    </main>
+                    <Sidebar active="company" />
+                    <MobileNav />
+                </div>
+            );
+        };
+
+        // --- Screen 3: Landing Page (Overview) ---
+        const LandingPage = () => (
+            <div className="min-h-screen">
+                <header className="fixed top-0 w-full z-50 bg-surface/60 backdrop-blur-xl border-b border-white/10 px-8 py-4 flex justify-between items-center">
+                    <span className="font-display-lg text-2xl font-extrabold text-primary-fixed-dim">Krishi Connect AI</span>
+                    <div className="hidden md:flex gap-8 text-sm">
+                        <Link to="/farmer" className="hover:text-primary-fixed">Farmers</Link>
+                        <Link to="/company" className="hover:text-primary-fixed">Companies</Link>
+                        <Link to="/matching" className="hover:text-primary-fixed">Engine</Link>
+                    </div>
+                    <Link to="/farmer" className="bg-primary-fixed-dim text-on-primary px-6 py-2 rounded-full font-bold">Launch App</Link>
+                </header>
+                <section className="relative min-h-screen flex items-center justify-center pt-20">
+                    <div className="absolute inset-0 z-0">
+                        <img className="w-full h-full object-cover opacity-40" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDw9d8Ue8uncCFiXvaiPidoLJwW9BpbbRUfQkj3b4eBs43LrLhobAWi6JUZ67AHW9g9mpoyWFDHRnMCUKjsWQlYrZFDMQVtt8nWGgc7qd6S07V4LSqQi0kzov7-teqz0xD07u5eoJnE-UbNAZq_yxjExWhmd8FteIh7bdVH5aJ_M2mCqd_Pti3p7a1ekdHSfrjmXFDnEUgYdQggkv79_qypgDwFSrUYSSJkfQjbdK33-ETQfl6llDCnHqHsuKOjqpWrLEOxSG59us12" alt="Hero" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background"></div>
+                    </div>
+                    <div className="relative z-10 text-center px-6">
+                        <h1 className="text-4xl md:text-7xl font-extrabold text-primary-fixed-dim mb-6">AI-Powered Contract Farming</h1>
+                        <p className="text-lg md:text-xl text-on-surface-variant max-w-2xl mx-auto mb-10">Connecting Farmers & Companies with Smart Matching, Intelligence, and AI Automation.</p>
+                        <div className="flex flex-col md:flex-row gap-4 justify-center">
+                            <Link to="/farmer" className="glowing-btn px-10 py-4 bg-primary-fixed-dim text-on-primary rounded-full font-bold">Start Farming</Link>
+                            <Link to="/company" className="glass-card px-10 py-4 text-primary-fixed-dim rounded-full border border-primary-fixed-dim/30">Company Portal</Link>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        );
+
+        // --- Screen 4: AI Assistant & Disease Detection ---
+        const AIAssistant = () => {
+            const [alerts, setAlerts] = useState([
+                { time: '09:00 AM', msg: 'Irrigation Pulse', icon: 'water_drop', active: true },
+                { time: '02:00 PM', msg: 'Restock Fertilizer', icon: 'inventory_2', active: false }
+            ]);
+            const [aiStatus, setAiStatus] = useState('idle'); // idle, thinking, reporting
+            const [diagnosis, setDiagnosis] = useState(null);
+            const [aiResponse, setAiResponse] = useState("How can I help you?");
+
+            const handleConsult = async () => {
+                setAiStatus('thinking');
+                setAiResponse("Analyzing field data and market trends...");
+                try {
+                    const res = await fetch('/api/ai/consult', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ message: "Check field health" })
+                    });
+                    const data = await res.json();
+                    setAiResponse(data.response);
+                } catch (err) {
+                    setAiResponse("Consultation simulation complete. Ready for real-time input.");
+                } finally {
+                    setAiStatus('idle');
+                }
+            };
+
+            const handleScan = async () => {
+                setAiStatus('thinking');
+                try {
+                    const res = await fetch('/api/ai/diagnose', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ image: "base64_crop_leaf" })
+                    });
+                    const data = await res.json();
+                    setDiagnosis(data);
+                } catch (err) {
+                    console.log("Scan simulation complete.");
+                } finally {
+                    setAiStatus('idle');
+                }
+            };
+
+            return (
+                <div className="md:ml-72 flex flex-col min-h-screen">
+                    <TopHeader />
+                    <main className="flex-grow p-container-margin max-w-7xl mx-auto w-full space-y-stack-lg pb-24 md:pb-8">
+                        <div className="grid grid-cols-1 lg:grid-cols-12 gap-stack-lg">
+                            <section className="lg:col-span-8 glass-panel rounded-lg p-card-padding flex flex-col items-center justify-center min-h-[400px]">
+                                <div className={`ai-orb w-48 h-48 rounded-full mb-8 flex items-center justify-center transition-all duration-500 ${aiStatus === 'thinking' ? 'scale-110 shadow-[0_0_50px_rgba(0,255,136,0.6)]' : ''}`}>
+                                    <div className="flex items-end gap-1">
+                                        {[4, 8, 12, 6, 10, 5].map((h, i) => (
+                                            <div 
+                                                key={i} 
+                                                className={`w-1 bg-primary-fixed-dim ${aiStatus === 'thinking' ? 'animate-bounce' : 'h-4'}`} 
+                                                style={{height: `${h*4}px`, animationDelay: `${i*0.1}s`}}
+                                            ></div>
+                                        ))}
+                                    </div>
+                                </div>
+                                <h2 className="text-3xl font-bold mb-2">{aiStatus === 'thinking' ? 'AI is thinking...' : 'Krishi Advisor v4.2'}</h2>
+                                <p className="text-on-surface-variant text-center max-w-sm mb-8">{aiResponse}</p>
+                                <button 
+                                    onClick={handleConsult}
+                                    className={`w-20 h-20 bg-primary-fixed-dim rounded-full flex items-center justify-center shadow-lg transition-all ${aiStatus === 'thinking' ? 'opacity-50' : 'hover:scale-110 hover:shadow-[0_0_30px_rgba(0,255,136,0.5)]'}`}
+                                >
+                                    <span className="material-symbols-outlined text-3xl text-on-primary">mic</span>
+                                </button>
+                            </section>
+                            <aside className="lg:col-span-4 glass-panel p-card-padding rounded-lg">
+                                <h3 className="font-bold mb-4">Reminder Timeline</h3>
+                                <div className="space-y-4">
+                                    {alerts.map((a, i) => (
+                                        <div key={i} className="flex gap-4 items-start">
+                                            <span className={`material-symbols-outlined ${a.active ? 'text-primary-fixed-dim' : 'text-on-surface-variant'}`}>{a.icon}</span>
+                                            <div>
+                                                <p className="text-xs opacity-60">{a.time}</p>
+                                                <p className="font-medium">{a.msg}</p>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </aside>
+                        </div>
+                        <div className="grid grid-cols-1 lg:grid-cols-12 gap-stack-lg">
+                            <section 
+                                onClick={handleScan}
+                                className="lg:col-span-5 glass-panel p-card-padding rounded-lg border-dashed border-2 border-primary-fixed-dim/30 text-center hover:border-primary-fixed-dim transition-all cursor-pointer group"
+                            >
+                                <span className="material-symbols-outlined text-5xl text-primary-fixed-dim mb-4 group-hover:scale-110 transition-transform">photo_camera</span>
+                                <h3 className="text-xl font-bold mb-2">Crop Scan</h3>
+                                <p className="text-sm text-on-surface-variant mb-4">Drag and drop images for AI analysis</p>
+                                <button className="bg-white/5 border border-white/10 px-6 py-2 rounded-full group-hover:bg-white/10 transition-all">
+                                    {aiStatus === 'thinking' ? 'Analyzing Leaf...' : 'Upload File'}
+                                </button>
+                            </section>
+                            <section className="lg:col-span-7 glass-panel rounded-lg flex flex-col md:flex-row overflow-hidden min-h-[250px]">
+                                <img className="w-full md:w-1/3 h-48 md:h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC1XYyCxAEa1oUnBI94dWckKUb_gaIP9F6VgXEnmxgWiY3Jn1N20Qrd06Cv_NEeRYISSmTXh4pydehqrxWhSvv0OYqtZnPEtjz2Cy3nIrESloZDcFL4h_95_Ow6dqMuSosiphfR6G3oFtG0QeztHQjmKtEEIU0WctJ6vVyfCKtarG1GlRW3h23CQ_hvX4q2fAN22T4A3vneotphXVR5fY0iWdymLXx41fXxJCP0nbt1CIsDE9Tuyn_3Zxl0L97LwT2ShLMCoGyLOmNi" alt="Leaf" />
+                                <div className="p-6 flex-1">
+                                    {diagnosis ? (
+                                        <>
+                                            <span className="bg-error-container text-on-error px-3 py-1 rounded-full text-xs font-bold uppercase">{diagnosis.severity} DETECTED</span>
+                                            <h3 className="text-2xl font-bold text-primary-fixed-dim mt-2">{diagnosis.disease}</h3>
+                                            <div className="mt-4 p-4 bg-surface-container rounded-lg">
+                                                <p className="font-bold">AI Recommendation</p>
+                                                <p className="text-sm text-on-surface-variant">{diagnosis.recommendation}</p>
+                                            </div>
+                                        </>
+                                    ) : (
+                                        <div className="flex flex-col items-center justify-center h-full text-on-surface-variant italic">
+                                            Waiting for scan analysis...
+                                        </div>
+                                    )}
+                                </div>
+                            </section>
+                        </div>
+                    </main>
+                    <Sidebar active="ai" />
+                    <MobileNav />
+                </div>
+            );
+        };
+
+        // --- Screen 5: Matching Engine ---
+        const MatchingEngine = () => {
+            const [activeMatches, setActiveMatches] = useState([
+                {name: 'Tulsi Contract', score: '92%', match: 'Organic Legumes', details: { soil: '98%', climate: '84%', market: '91%' }},
+                {name: 'AquaHarvest Ltd', score: '85%', match: 'Hydroponic Integration', details: { soil: '72%', climate: '95%', market: '88%' }}
+            ]);
+            const [selectedMatch, setSelectedMatch] = useState(activeMatches[0]);
+
+            useEffect(() => {
+                async function fetchMatches() {
+                    try {
+                        const { data, error } = await supabase
+                            .from('contracts')
+                            .select('*, profiles!company_id(full_name)')
+                            .eq('status', 'pending');
+                        
+                        if (data && data.length > 0) {
+                            const formatted = data.map(d => ({
+                                name: d.profiles.full_name,
+                                score: `${d.match_score}%`,
+                                match: 'Dynamic AI Match',
+                                details: d.terms || { soil: '85%', climate: '80%', market: '75%' }
+                            }));
+                            setActiveMatches(formatted);
+                            setSelectedMatch(formatted[0]);
+                        }
+                    } catch (err) {
+                        console.log("Using synthetic matching data.");
+                    }
+                }
+                fetchMatches();
+            }, []);
+
+            return (
+                <div className="md:ml-72 flex flex-col min-h-screen">
+                    <TopHeader />
+                    <main className="flex-grow p-container-margin max-w-7xl mx-auto w-full space-y-stack-lg pb-24 md:pb-8">
+                        <section className="flex flex-col lg:flex-row justify-between items-start gap-4">
+                            <div>
+                                <h2 className="text-3xl font-extrabold text-primary-fixed-dim neon-glow-text">AI Matching Engine</h2>
+                                <p className="text-on-surface-variant">Scanning {activeMatches.length * 52} partnerships for Field Sector-04.</p>
+                            </div>
+                            <div className="glass-card p-4 rounded-lg flex gap-8">
+                                <div className="text-center"><p className="text-xs opacity-60">Active Scans</p><p className="text-xl font-bold text-primary-fixed-dim">{activeMatches.length}</p></div>
+                                <div className="text-center"><p className="text-xs opacity-60">Avg. Match</p><p className="text-xl font-bold text-primary-fixed-dim">78%</p></div>
+                            </div>
+                        </section>
+                        <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
+                            <div className="md:col-span-4 space-y-4">
+                                <h3 className="font-bold">Recommended Matches</h3>
+                                {activeMatches.map((m, i) => (
+                                    <div 
+                                        key={i} 
+                                        onClick={() => setSelectedMatch(m)}
+                                        className={`glass-card p-6 rounded-lg border transition-all cursor-pointer ${selectedMatch.name === m.name ? 'border-primary-fixed-dim bg-primary-fixed-dim/5' : 'hover:border-primary-fixed-dim/50'}`}
+                                    >
+                                        <div className="flex justify-between items-start mb-4">
+                                            <h4 className="font-bold">{m.name}</h4>
+                                            <span className="text-primary-fixed-dim font-bold">{m.score}</span>
+                                        </div>
+                                        <p className="text-sm text-on-surface-variant mb-4">{m.match}</p>
+                                        <button className="w-full py-2 bg-primary-fixed-dim/20 text-primary-fixed-dim rounded-full text-xs font-bold border border-primary-fixed-dim/20">Analyze compatibility</button>
+                                    </div>
+                                ))}
+                            </div>
+                            <div className="md:col-span-8 glass-card p-8 rounded-lg">
+                                <h3 className="text-xl font-bold mb-6">Compatibility Analysis: {selectedMatch.name}</h3>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                                    <div className="space-y-8">
+                                        {[
+                                            {l: 'Soil Composition', w: selectedMatch.details.soil},
+                                            {l: 'Climate Resilience', w: selectedMatch.details.climate},
+                                            {l: 'Market Premium', w: selectedMatch.details.market}
+                                        ].map((b, i) => (
+                                            <div key={i} className="space-y-2">
+                                                <div className="flex justify-between text-sm"><span>{b.l}</span><span className="text-primary-fixed-dim">{b.w}</span></div>
+                                                <div className="h-2 w-full bg-white/5 rounded-full overflow-hidden">
+                                                    <div className="h-full bg-primary-fixed-dim transition-all duration-1000" style={{width: b.w}}></div>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                    <div className="relative flex items-center justify-center">
+                                        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAy0Cf1VnYFjwfTWEKCHJ9Hy0amo_Q5sha8JZxpkNBtXvLX869J_EEpY6xY7ynKb_TZG9e1XdyL8hHJayTu1q7fRlJQE21ejTG3GYDMB2y3MGyvJWti7Go3zE3fthY_Oe6yAYAkqYvllGvzxmLuWqSo1aoVbqJqxBKnkiRkfdHqRgy7qgyprMUbA3RE8H9s7QyNzioNkS9oCOeX5IkD_AHLqnq98pgmLERAkWRTscsoDI5K7np5HSdvOKZRy5-r4YAFplC0uSmGONzV" alt="Radar" className="opacity-80 mix-blend-screen w-64 h-64" />
+                                        <div className="absolute text-primary-fixed-dim font-black text-2xl neon-glow-text">{selectedMatch.score}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </main>
+                    <Sidebar active="matching" />
+                    <MobileNav />
+                </div>
+            );
+        };
+
+        // --- App Entry Point ---
+        const App = () => {
+            return (
+                <MemoryRouter>
+                    <Routes>
+                        <Route path="/" element={<LandingPage />} />
+                        <Route path="/farmer" element={<FarmerDashboard />} />
+                        <Route path="/company" element={<CompanyDashboard />} />
+                        <Route path="/ai-assistant" element={<AIAssistant />} />
+                        <Route path="/matching" element={<MatchingEngine />} />
+                    </Routes>
+                </MemoryRouter>
+            );
+        };
+
+        const root = createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>

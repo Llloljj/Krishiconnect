@@ -1,0 +1,14 @@
+{
+  "name": "kisan-madad",
+  "version": "2.0.0",
+  "description": "B2B Contract Farming Marketplace",
+  "main": "server.js",
+  "scripts": {
+    "dev": "nodemon server.js",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "nodemon": "^3.1.0"
+  }
+}

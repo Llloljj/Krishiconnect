@@ -1,0 +1,19 @@
+OBJECTIVE: "Build a high-performance B2B contract farming marketplace connecting farmers and companies via NIM-optimized matching logic."
+SUCCESS_CRITERIA:
+  - "Automated percentage-based matching score generation."
+  - "Secure, role-based authentication (Farmer/Company)."
+  - "Premium Electric Neon Glassmorphism UI."
+  - "Validated RLS security for all agricultural data."
+UI_REQUIREMENTS:
+  - "Futuristic Glassmorphism (Krishi Connect AI Aesthetic)."
+  - "Obsidian Teal Background (#0c1516)."
+  - "Neon Green Luminescence (#00ff88)."
+TECH_STACK:
+  - "Frontend: Vanilla HTML/CSS/JS (Antigravity Lead)"
+  - "Backend: Node.js (Express) (Claude Lead)"
+  - "Database: Supabase (PostgreSQL)"
+PHASES:
+  - "Phase 1: Research & Identity"
+  - "Phase 2: Core Infrastructure"
+  - "Phase 3: Integration & Scale"
+  - "Phase 4: Optimization"
