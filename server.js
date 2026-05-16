@@ -80,6 +80,28 @@ app.post('/api/drone/launch', (req, res) => {
     res.json({ status: "SUCCESS", message: "Swarm deployed. ETA Sector-4: 45 seconds." });
 });
 
+// --- Geo-Intelligence Hub: Weather & Soil Simulation ---
+app.get('/api/field-data/:location', (req, res) => {
+    const location = req.params.location.toLowerCase();
+    
+    const regionalData = {
+        'punjab': { temp: '32°C', humidity: '45%', soil: 'Alluvial', texture: { clay: '20', silt: '40', sand: '40' }, rain: '10mm' },
+        'maharashtra': { temp: '35°C', humidity: '30%', soil: 'Black Soil', texture: { clay: '60', silt: '30', sand: '10' }, rain: '5mm' },
+        'karnataka': { temp: '28°C', humidity: '70%', soil: 'Red Soil', texture: { clay: '30', silt: '20', sand: '50' }, rain: '25mm' },
+        'haryana': { temp: '33°C', humidity: '40%', soil: 'Sandy Loam', texture: { clay: '15', silt: '25', sand: '60' }, rain: '8mm' }
+    };
+
+    const data = regionalData[location] || { 
+        temp: '30°C', 
+        humidity: '55%', 
+        soil: 'Loamy Texture', 
+        texture: { clay: '25', silt: '35', sand: '40' }, 
+        rain: '15mm' 
+    };
+
+    res.json(data);
+});
+
 // Fallback for SPA routing
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
