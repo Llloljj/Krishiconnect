@@ -1,0 +1,113 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #2e7d32;
+  --color-primary-light: #81c784;
+  --color-lime: #b7e4c7;
+  --color-background: #07140d;
+  --color-surface: #0f1f17;
+  --color-surface-elevated: #152a20;
+  --color-dark: #f8faf8;
+  --color-muted: #a7b3af;
+  --color-white: #f8faf8;
+  --color-border: rgba(255, 255, 255, 0.08);
+  --color-glass: rgba(255, 255, 255, 0.06);
+  --font-heading: "Poppins", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-family-heading: var(--font-heading);
+  --font-family-body: var(--font-body);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-white font-body antialiased;
+  }
+
+  .font-heading {
+    font-family: var(--font-heading);
+  }
+
+  .text-muted {
+    color: var(--color-muted);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-heading);
+  }
+
+  ::selection {
+    background: rgba(46, 125, 50, 0.35);
+    color: #f8faf8;
+  }
+}
+
+@layer utilities {
+  .glass {
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .glass-strong {
+    background: rgba(15, 31, 23, 0.75);
+    backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .section-padding {
+    @apply py-28 sm:py-36;
+  }
+
+  .gradient-hero {
+    background:
+      radial-gradient(ellipse 70% 50% at 20% 0%, rgba(46, 125, 50, 0.18), transparent 55%),
+      radial-gradient(ellipse 60% 45% at 85% 15%, rgba(129, 199, 132, 0.1), transparent 50%),
+      linear-gradient(180deg, #07140d 0%, #0a1810 50%, #07140d 100%);
+  }
+
+  .gradient-glow {
+    background: radial-gradient(circle at center, rgba(46, 125, 50, 0.25), transparent 70%);
+  }
+
+  .text-gradient {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, #81c784 0%, #b7e4c7 50%, #f8faf8 100%);
+  }
+
+  .text-gradient-green {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, #2e7d32, #81c784);
+  }
+
+  .grid-bg {
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 64px 64px;
+  }
+
+  .image-overlay {
+    background: linear-gradient(
+      135deg,
+      rgba(7, 20, 13, 0.92) 0%,
+      rgba(7, 20, 13, 0.55) 50%,
+      rgba(7, 20, 13, 0.85) 100%
+    );
+  }
+
+  .cinematic-border {
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow:
+      0 0 0 1px rgba(255, 255, 255, 0.04) inset,
+      0 24px 80px -24px rgba(0, 0, 0, 0.6);
+  }
+}
