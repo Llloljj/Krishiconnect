@@ -1,24 +1,49 @@
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Package, Users, TrendingUp, FileText, Target } from 'lucide-react';
 import DashboardHeader from '../../components/dashboard/DashboardHeader';
 import StatCard from '../../components/dashboard/StatCard';
 import ChartCard from '../../components/dashboard/ChartCard';
 import DataTable from '../../components/dashboard/DataTable';
+import { api, getUser } from '../../services/api';
 import { fadeUp } from '../../utils/motionVariants';
 
-const farmers = [
+const defaultFarmers = [
   { id: 1, cells: ['Ramesh Patil', 'Wheat', '94%', 'Nashik'] },
   { id: 2, cells: ['Sunita Devi', 'Tomato', '88%', 'Pune'] },
   { id: 3, cells: ['Vikram Singh', 'Rice', '91%', 'Punjab'] },
 ];
 
 export default function CompanyDashboard() {
+  const user = getUser();
+  const [dashboard, setDashboard] = useState(null);
+
+  useEffect(() => {
+    api.getCompanyDashboard().then(setDashboard).catch(() => setDashboard(null));
+  }, []);
+
+  const farmers =
+    dashboard?.matches?.map((m, i) => ({
+      id: i,
+      cells: [m.farmer, m.crop, m.match, m.region],
+    })) ?? defaultFarmers;
+
+  const insights = dashboard?.insights ?? [
+    'Wheat supply tight in Nashik — act within 14 days',
+    'Tomato surplus in Pune — negotiate volume discount',
+  ];
+
   return (
     <div className="flex flex-1 flex-col overflow-y-auto">
       <DashboardHeader
         title="Company Dashboard"
         subtitle="Procurement command center — AgriCorp Ltd"
-        user={{ name: 'Priya Sharma', role: 'Procurement Head', initials: 'PS' }}
+        user={{
+          name: user?.full_name ?? 'Priya Sharma',
+          role: 'Procurement Head',
+          initials: (user?.full_name ?? 'PS').slice(0, 2).toUpperCase(),
+        }}
       />
 
       <motion.div
@@ -27,11 +52,40 @@ export default function CompanyDashboard() {
         animate="visible"
         variants={{ visible: { transition: { staggerChildren: 0.08 } } }}
       >
+        <motion.div variants={fadeUp} className="flex flex-wrap gap-3">
+          <Link
+            to="/company/requirement"
+            className="rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-white transition hover:bg-primary/90"
+          >
+            Post new requirement
+          </Link>
+        </motion.div>
+
         <motion.div variants={fadeUp} className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-          <StatCard icon={Package} label="Procurement volume" value="2.4K T" trend="+12%" />
-          <StatCard icon={Users} label="Verified farmers" value="186" trend="+24 new" />
-          <StatCard icon={TrendingUp} label="AI demand prediction" value="+22%" trend="Wheat" />
-          <StatCard icon={FileText} label="Open contracts" value="24" trend="6 closing" />
+          <StatCard
+            icon={Package}
+            label="Procurement volume"
+            value={dashboard?.procurementVolume ?? '2.4K T'}
+            trend="+12%"
+          />
+          <StatCard
+            icon={Users}
+            label="Verified farmers"
+            value={String(dashboard?.verifiedFarmers ?? 186)}
+            trend="Live"
+          />
+          <StatCard
+            icon={TrendingUp}
+            label="AI demand prediction"
+            value={dashboard?.demandForecast ?? '+22%'}
+            trend="Wheat"
+          />
+          <StatCard
+            icon={FileText}
+            label="Open contracts"
+            value={String(dashboard?.openContracts ?? 24)}
+            trend="Active"
+          />
         </motion.div>
 
         <motion.div variants={fadeUp} className="grid gap-6 lg:grid-cols-2">
@@ -55,11 +109,7 @@ export default function CompanyDashboard() {
               <p className="text-sm font-semibold text-white">Smart sourcing insights</p>
             </div>
             <ul className="mt-4 space-y-3 text-sm">
-              {[
-                'Wheat supply tight in Nashik — act within 14 days',
-                'Tomato surplus in Pune — negotiate volume discount',
-                'Rice quality index up 8% in Punjab cluster',
-              ].map((tip) => (
+              {insights.map((tip) => (
                 <li key={tip} className="rounded-xl border border-white/8 bg-white/5 px-3 py-2 text-muted">
                   {tip}
                 </li>

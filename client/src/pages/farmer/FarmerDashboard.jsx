@@ -1,10 +1,11 @@
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
   Sprout,
   TrendingUp,
   FileCheck,
   CloudSun,
-  Mic,
   IndianRupee,
   Landmark,
 } from 'lucide-react';
@@ -12,23 +13,44 @@ import DashboardHeader from '../../components/dashboard/DashboardHeader';
 import StatCard from '../../components/dashboard/StatCard';
 import ChartCard from '../../components/dashboard/ChartCard';
 import DataTable from '../../components/dashboard/DataTable';
+import AIAssistant from '../../components/dashboard/AIAssistant';
+import { api, getUser } from '../../services/api';
 import { fadeUp } from '../../utils/motionVariants';
 
-const contracts = [
+const defaultContracts = [
   { id: 1, cells: ['AgriCorp Ltd', 'Wheat 50T', 'Active', '₹12.4L'] },
   { id: 2, cells: ['FreshMart', 'Tomato 20T', 'Pending', '₹4.2L'] },
-  { id: 3, cells: ['GrainHub', 'Rice 30T', 'Active', '₹8.1L'] },
 ];
 
-const schemes = ['PM-KISAN — Eligible', 'Crop Insurance — Recommended', 'Soil Health Card — Pending'];
-
 export default function FarmerDashboard() {
+  const user = getUser();
+  const [dashboard, setDashboard] = useState(null);
+
+  useEffect(() => {
+    api.getFarmerDashboard().then(setDashboard).catch(() => setDashboard(null));
+  }, []);
+
+  const crop = dashboard?.cropRecommendation ?? 'Wheat';
+  const contracts =
+    dashboard?.contracts?.map((c, i) => ({
+      id: i,
+      cells: [c.buyer, c.crop, c.status, c.value],
+    })) ?? defaultContracts;
+
+  const schemes =
+    dashboard?.schemes?.map((s) => `${s.name} — ${s.status}`) ??
+    ['PM-KISAN — Eligible', 'Crop Insurance — Recommended'];
+
   return (
     <div className="flex flex-1 flex-col overflow-y-auto">
       <DashboardHeader
         title="Farmer Dashboard"
-        subtitle="Welcome back, Ramesh — Nashik, Maharashtra"
-        user={{ name: 'Ramesh Patil', role: 'Farmer', initials: 'RP' }}
+        subtitle={`Welcome${user?.full_name ? `, ${user.full_name}` : ''} — Nashik, Maharashtra`}
+        user={{
+          name: user?.full_name ?? 'Ramesh Patil',
+          role: 'Farmer',
+          initials: (user?.full_name ?? 'RP').slice(0, 2).toUpperCase(),
+        }}
       />
 
       <motion.div
@@ -37,11 +59,30 @@ export default function FarmerDashboard() {
         animate="visible"
         variants={{ visible: { transition: { staggerChildren: 0.08 } } }}
       >
+        <motion.div variants={fadeUp} className="flex flex-wrap gap-3">
+          <Link
+            to="/farmer/register"
+            className="rounded-xl border border-primary/30 bg-primary/15 px-4 py-2 text-sm font-semibold text-primary-light transition hover:bg-primary/25"
+          >
+            Complete farmer profile
+          </Link>
+        </motion.div>
+
         <motion.div variants={fadeUp} className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-          <StatCard icon={Sprout} label="AI crop recommendation" value="Wheat" trend="Optimal" />
-          <StatCard icon={TrendingUp} label="Market demand" value="High" trend="+18%" />
-          <StatCard icon={FileCheck} label="Active contracts" value="3" trend="2 due" />
-          <StatCard icon={IndianRupee} label="Avg. crop price" value="₹2,840/q" trend="+6%" />
+          <StatCard icon={Sprout} label="AI crop recommendation" value={crop} trend="Optimal" />
+          <StatCard
+            icon={TrendingUp}
+            label="Market demand"
+            value={dashboard?.marketDemand ?? 'High'}
+            trend={dashboard?.marketChange ?? '+18%'}
+          />
+          <StatCard icon={FileCheck} label="Active contracts" value={String(contracts.length)} trend="Live" />
+          <StatCard
+            icon={IndianRupee}
+            label="Avg. crop price"
+            value={dashboard?.avgPrice ?? '₹2,840/q'}
+            trend="+6%"
+          />
         </motion.div>
 
         <motion.div variants={fadeUp} className="grid gap-6 lg:grid-cols-3">
@@ -52,25 +93,13 @@ export default function FarmerDashboard() {
               data={[42, 55, 48, 62, 58, 70, 65, 78, 72]}
             />
           </div>
-
-          <div className="rounded-3xl border border-primary/20 bg-gradient-to-br from-primary/20 to-primary/5 p-6">
-            <div className="flex items-center gap-2">
-              <Mic className="h-5 w-5 text-primary-light" />
-              <span className="font-semibold text-white">Voice Assistant</span>
-            </div>
-            <p className="mt-4 text-sm text-muted">
-              &ldquo;What government schemes am I eligible for?&rdquo;
-            </p>
-            <p className="mt-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white">
-              You may qualify for PM-KISAN and crop insurance. Tap to apply.
-            </p>
-            <button
-              type="button"
-              className="mt-4 w-full rounded-xl bg-primary py-2.5 text-sm font-semibold text-white transition hover:bg-primary/90"
-            >
-              Start voice session
-            </button>
-          </div>
+          <AIAssistant
+            profile={{
+              soil_type: 'loamy',
+              state: 'Maharashtra',
+              location: 'Nashik',
+            }}
+          />
         </motion.div>
 
         <motion.div variants={fadeUp} className="grid gap-6 lg:grid-cols-2">
@@ -87,12 +116,15 @@ export default function FarmerDashboard() {
                 <p className="text-xs font-semibold uppercase tracking-wider text-muted">
                   Weather insights
                 </p>
-                <p className="font-heading text-2xl font-bold text-white">28°C • Partly cloudy</p>
+                <p className="font-heading text-2xl font-bold text-white">
+                  {dashboard?.weather?.temperature_c ?? 28}°C •{' '}
+                  {dashboard?.weather?.condition ?? 'Partly cloudy'}
+                </p>
               </div>
             </div>
             <p className="mt-4 text-sm text-muted">
-              Light rain expected Thursday — ideal for wheat growth stage. Irrigation
-              recommended low.
+              {dashboard?.weather?.insight ??
+                'Light rain expected Thursday — ideal for wheat growth. Reduce irrigation.'}
             </p>
           </div>
         </motion.div>

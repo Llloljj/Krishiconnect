@@ -3,24 +3,24 @@ import {
   Sprout,
   TrendingUp,
   FileText,
-  Mic,
   Users,
   Package,
   BarChart3,
   MapPin,
   Landmark,
+  Target,
 } from 'lucide-react';
 
 export const farmerLinks = [
   { label: 'Overview', path: '/farmer', icon: LayoutDashboard },
-  { label: 'Crops', path: '/farmer', icon: Sprout },
+  { label: 'Register', path: '/farmer/register', icon: Sprout },
   { label: 'Market', path: '/farmer', icon: TrendingUp },
   { label: 'Contracts', path: '/farmer', icon: FileText },
 ];
 
 export const companyLinks = [
   { label: 'Overview', path: '/company', icon: LayoutDashboard },
-  { label: 'Procurement', path: '/company', icon: Package },
+  { label: 'Post demand', path: '/company/requirement', icon: Package },
   { label: 'Farmers', path: '/company', icon: Users },
   { label: 'Contracts', path: '/company', icon: FileText },
 ];
@@ -31,3 +31,5 @@ export const fpoLinks = [
   { label: 'Analytics', path: '/fpo', icon: BarChart3 },
   { label: 'Schemes', path: '/fpo', icon: Landmark },
 ];
+
+export { Target, MapPin };
