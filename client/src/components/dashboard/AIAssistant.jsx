@@ -3,10 +3,10 @@ import { Loader2, Send, Sparkles } from 'lucide-react';
 import { api } from '../../services/api';
 
 const starters = [
-  'What crop should I plant this season?',
-  'My wheat leaves have yellow spots — what should I do?',
-  'Which government schemes am I eligible for?',
-  'Should I irrigate before the rain forecast?',
+  // 'What crop should I plant this season?',
+  // 'My wheat leaves have yellow spots — what should I do?',
+  // 'Which government schemes am I eligible for?',
+  // 'Should I irrigate before the rain forecast?',
 ];
 
 export default function AIAssistant({ profile = {} }) {
@@ -28,7 +28,13 @@ export default function AIAssistant({ profile = {} }) {
     setLoading(true);
 
     try {
-      const { response } = await api.aiConsult(trimmed, profile);
+      const { response } = await api.aiConsult(trimmed, {
+        ...profile,
+        assistantContext: {
+          ...(profile.assistantContext ?? {}),
+          conversation: messages.slice(-6),
+        },
+      });
       setMessages((prev) => [...prev, { role: 'assistant', text: response }]);
     } catch {
       setMessages((prev) => [

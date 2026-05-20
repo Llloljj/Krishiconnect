@@ -25,10 +25,40 @@ const defaultContracts = [
 export default function FarmerDashboard() {
   const user = getUser();
   const [dashboard, setDashboard] = useState(null);
+  const [farmerProfile, setFarmerProfile] = useState(null);
+  const [fields, setFields] = useState([]);
 
   useEffect(() => {
-    api.getFarmerDashboard().then(setDashboard).catch(() => setDashboard(null));
-  }, []);
+    let active = true;
+
+    Promise.allSettled([api.getFarmerDashboard(), api.getFarmers(), api.getFields()]).then(
+      ([dashboardResult, farmersResult, fieldsResult]) => {
+        if (!active) return;
+
+        const nextDashboard =
+          dashboardResult.status === 'fulfilled' ? dashboardResult.value : null;
+        const farmers = farmersResult.status === 'fulfilled' ? farmersResult.value : [];
+        const nextFields = fieldsResult.status === 'fulfilled' ? fieldsResult.value : [];
+        const currentFarmer =
+          farmers.find((farmer) => farmer.email && farmer.email === user?.email) ??
+          farmers.find((farmer) => farmer.name && farmer.name === user?.full_name) ??
+          farmers[0] ??
+          null;
+
+        setDashboard(nextDashboard);
+        setFarmerProfile(currentFarmer);
+        setFields(
+          currentFarmer?.id
+            ? nextFields.filter((field) => !field.farmer_id || field.farmer_id === currentFarmer.id)
+            : nextFields,
+        );
+      },
+    );
+
+    return () => {
+      active = false;
+    };
+  }, [user?.email, user?.full_name]);
 
   const crop = dashboard?.cropRecommendation ?? 'Wheat';
   const contracts =
@@ -40,6 +70,39 @@ export default function FarmerDashboard() {
   const schemes =
     dashboard?.schemes?.map((s) => `${s.name} — ${s.status}`) ??
     ['PM-KISAN — Eligible', 'Crop Insurance — Recommended'];
+
+  const assistantContext = {
+    farmer: farmerProfile ?? {
+      name: user?.full_name ?? 'Ramesh Patil',
+      location: 'Nashik',
+      state: 'Maharashtra',
+      land_size_acres: 12,
+      soil_type: 'loamy',
+      irrigation: 'drip',
+      previous_crops: ['wheat', 'tomato'],
+      farming_type: 'contract',
+      transport_available: true,
+      organic: false,
+      harvest_timeline: 'April',
+    },
+    fields,
+    weather: dashboard?.weather ?? {
+      location: 'Nashik, Maharashtra',
+      temperature_c: 28,
+      condition: 'Partly cloudy',
+      rain_chance_percent: 60,
+      insight: 'Light rain expected Thursday - reduce irrigation by 20% and protect harvested grain.',
+    },
+    market: {
+      cropRecommendation: dashboard?.cropRecommendation ?? crop,
+      cropInsight: dashboard?.cropInsight,
+      marketDemand: dashboard?.marketDemand ?? 'High',
+      marketChange: dashboard?.marketChange ?? '+18%',
+      avgPrice: dashboard?.avgPrice ?? 'Rs 2,840/q',
+    },
+    schemes: dashboard?.schemes ?? [],
+    contracts: dashboard?.contracts ?? [],
+  };
 
   return (
     <div className="flex flex-1 flex-col overflow-y-auto">
@@ -93,13 +156,7 @@ export default function FarmerDashboard() {
               data={[42, 55, 48, 62, 58, 70, 65, 78, 72]}
             />
           </div>
-          <AIAssistant
-            profile={{
-              soil_type: 'loamy',
-              state: 'Maharashtra',
-              location: 'Nashik',
-            }}
-          />
+          <AIAssistant profile={{ assistantContext }} />
         </motion.div>
 
         <motion.div variants={fadeUp} className="grid gap-6 lg:grid-cols-2">

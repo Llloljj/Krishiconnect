@@ -38,6 +38,8 @@ export const api = {
 
   getFarmers: () => request('/api/farmers'),
 
+  getFields: () => request('/api/fields'),
+
   postRequirement: (body) =>
     request('/api/company/requirements', { method: 'POST', body: JSON.stringify(body) }),
 

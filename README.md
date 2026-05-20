@@ -27,7 +27,8 @@ Copy `server/.env.example` to `server/.env` and set:
 - `SUPABASE_ANON_KEY` (publishable key)
 - `SUPABASE_SERVICE_ROLE_KEY` (secret key)
 
-Optional: `ANTHROPIC_API_KEY` for live Claude responses (otherwise smart fallbacks are used).
+Optional: `GEMINI_API_KEY` for live Gemini responses (otherwise smart fallbacks are used).
+You can override the default model with `GEMINI_MODEL`; the default is `gemini-2.5-flash`.
 
 ## API highlights
 
