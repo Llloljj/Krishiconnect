@@ -16,7 +16,7 @@ function buildFallbackReply(message, profile = {}) {
   const weather = context?.weather ?? {};
   const location = farmer?.location || weather?.location || 'your area';
 
-  if (/disease|spot|fung|pest|insect|yellow/.test(text)) {
+  if (/disease|spot|fungal|fungus|pest|insect|yellow/.test(text)) {
     return `For ${location}, start with field scouting and remove heavily affected leaves, spray only after confirming pest/fungal symptoms, and avoid over-irrigation for 2-3 days. If you share the crop and symptom color/pattern, I can suggest a tighter treatment plan.`;
   }
 
