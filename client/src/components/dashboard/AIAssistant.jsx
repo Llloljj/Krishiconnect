@@ -9,11 +9,45 @@ const starters = [
   // 'Should I irrigate before the rain forecast?',
 ];
 
-export default function AIAssistant({ profile = {} }) {
+function buildFallbackReply(message, profile = {}) {
+  const text = message.toLowerCase();
+  const context = profile?.assistantContext ?? {};
+  const farmer = context?.farmer ?? {};
+  const weather = context?.weather ?? {};
+  const location = farmer?.location || weather?.location || 'your area';
+
+  if (/disease|spot|fung|pest|insect|yellow/.test(text)) {
+    return `For ${location}, start with field scouting and remove heavily affected leaves, spray only after confirming pest/fungal symptoms, and avoid over-irrigation for 2-3 days. If you share the crop and symptom color/pattern, I can suggest a tighter treatment plan.`;
+  }
+
+  if (/rain|weather|irrigat|water/.test(text)) {
+    return `Weather guidance for ${location}: check soil moisture before watering, reduce irrigation when rain chance is high, and prefer morning irrigation to reduce fungal risk. I can help you make a day-wise irrigation plan if you share your crop stage.`;
+  }
+
+  if (/scheme|subsidy|loan|pm-kisan|insurance/.test(text)) {
+    return 'You can usually check PM-KISAN eligibility, crop insurance enrollment windows, and drip/sprinkler subsidy schemes at your nearest agriculture office or CSC. Share your state and crop, and I will narrow this to likely matching schemes.';
+  }
+
+  if (/price|market|demand|sell|mandi/.test(text)) {
+    return 'To improve selling decisions, compare mandi trend for the last 7-14 days, check current demand from buyers/FPOs, and stagger harvest if prices are rising. If you share crop and expected quantity, I can suggest a better sale window.';
+  }
+
+  if (/crop|plant|sow|season/.test(text)) {
+    return `For ${location}, choose crops based on soil type, water availability, and current demand contracts. A safe plan is one primary cash crop plus one risk-buffer crop. Share your land size and irrigation type for a specific recommendation.`;
+  }
+
+  return 'I can help with crop planning, disease checks, irrigation timing, market demand, and government schemes. Tell me your crop and current issue, and I will provide a practical next step.';
+}
+
+export default function AIAssistant({
+  profile = {},
+  className = '',
+  welcomeMessage = 'Namaste! I am your KrishiConnect AI assistant. Ask about crops, disease, weather, or schemes.',
+}) {
   const [messages, setMessages] = useState([
     {
       role: 'assistant',
-      text: 'Namaste! I am your KrishiConnect AI assistant. Ask about crops, disease, weather, or schemes.',
+      text: welcomeMessage,
     },
   ]);
   const [input, setInput] = useState('');
@@ -35,13 +69,17 @@ export default function AIAssistant({ profile = {} }) {
           conversation: messages.slice(-6),
         },
       });
-      setMessages((prev) => [...prev, { role: 'assistant', text: response }]);
+      const assistantReply =
+        typeof response === 'string' && response.trim()
+          ? response
+          : buildFallbackReply(trimmed, profile);
+      setMessages((prev) => [...prev, { role: 'assistant', text: assistantReply }]);
     } catch {
       setMessages((prev) => [
         ...prev,
         {
           role: 'assistant',
-          text: 'Server unavailable. Start the backend with: cd server && npm run dev',
+          text: buildFallbackReply(trimmed, profile),
         },
       ]);
     } finally {
@@ -50,7 +88,9 @@ export default function AIAssistant({ profile = {} }) {
   };
 
   return (
-    <div className="flex h-full flex-col rounded-3xl border border-primary/20 bg-gradient-to-br from-primary/20 to-primary/5 p-6">
+    <div
+      className={`flex h-full flex-col rounded-3xl border border-primary/20 bg-gradient-to-br from-primary/20 to-primary/5 p-6 ${className}`}
+    >
       <div className="flex items-center gap-2">
         <Sparkles className="h-5 w-5 text-primary-light" />
         <span className="font-semibold text-white">AI Agriculture Assistant</span>

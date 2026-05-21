@@ -1,11 +1,15 @@
-import { motion } from 'framer-motion';
-import { ArrowRight, Play, CheckCircle2, MessageCircle, Bot } from 'lucide-react';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ArrowRight, Play, CheckCircle2, MessageCircle, Bot, X } from 'lucide-react';
 import { fadeUp } from '../../utils/motionVariants';
 import { trustIndicators } from '../../constants/landing';
 import Button from '../ui/Button';
 import newImage from '../../images/newImage.webp';
+import AIAssistant from '../dashboard/AIAssistant';
 
 export default function HeroSection() {
+  const [assistantOpen, setAssistantOpen] = useState(false);
+
   return (
     <section className="relative min-h-[100vh] overflow-hidden gradient-hero grid-bg">
       {/* Background Effects */}
@@ -138,6 +142,8 @@ export default function HeroSection() {
 
               {/* AI Chatbot */}
               <button
+                type="button"
+                onClick={() => setAssistantOpen(true)}
                 className="group flex flex-1 items-center gap-3 rounded-2xl border border-primary/20 bg-primary/10 px-5 py-4 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-primary hover:shadow-[0_0_25px_rgba(34,197,94,0.25)]"
               >
                 <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/20">
@@ -153,6 +159,45 @@ export default function HeroSection() {
           </motion.div>
         </div>
       </motion.div>
+
+      <AnimatePresence>
+        {assistantOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setAssistantOpen(false)}
+            className="fixed inset-0 z-[70] bg-black/70 p-4 backdrop-blur-sm sm:p-6"
+          >
+            <motion.div
+              initial={{ opacity: 0, y: 24, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 24, scale: 0.98 }}
+              transition={{ duration: 0.2 }}
+              onClick={(event) => event.stopPropagation()}
+              className="mx-auto flex h-full w-full max-w-2xl flex-col rounded-3xl border border-white/10 bg-surface p-4 sm:p-6"
+            >
+              <div className="mb-4 flex items-center justify-between gap-3">
+                <p className="text-sm font-semibold uppercase tracking-wide text-primary-light">
+                  KrishiConnect AI Assistant
+                </p>
+                <button
+                  type="button"
+                  onClick={() => setAssistantOpen(false)}
+                  className="rounded-lg border border-white/10 bg-white/5 p-2 text-muted transition hover:text-white"
+                  aria-label="Close AI assistant"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
+              <AIAssistant
+                className="min-h-0 flex-1"
+                welcomeMessage="Namaste! Ask me anything about crops, weather, disease, mandi demand, or schemes."
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }
@@ -309,4 +354,3 @@ export default function HeroSection() {
 //     </section>
 //   );
 // }
-
