@@ -2,14 +2,13 @@ import { useState } from 'react';
 import { Loader2, Send, Sparkles } from 'lucide-react';
 import { api } from '../../services/api';
 
-const starters = [
-  // 'What crop should I plant this season?',
-  // 'My wheat leaves have yellow spots — what should I do?',
-  // 'Which government schemes am I eligible for?',
-  // 'Should I irrigate before the rain forecast?',
+const defaultPrompts = [
+  'What crop should I plant this season?',
+  'Which government schemes am I eligible for?',
+  'How should I prepare for the next harvest?',
 ];
 
-export default function AIAssistant({ profile = {} }) {
+export default function AIAssistant({ profile = {}, quickPrompts = defaultPrompts }) {
   const [messages, setMessages] = useState([
     {
       role: 'assistant',
@@ -50,40 +49,42 @@ export default function AIAssistant({ profile = {} }) {
   };
 
   return (
-    <div className="flex h-full flex-col rounded-3xl border border-primary/20 bg-gradient-to-br from-primary/20 to-primary/5 p-6">
-      <div className="flex items-center gap-2">
-        <Sparkles className="h-5 w-5 text-primary-light" />
-        <span className="font-semibold text-white">AI Agriculture Assistant</span>
+    <div className="flex h-full w-full flex-col rounded-3xl border border-primary/20 bg-gradient-to-br from-primary/12 to-primary/6 p-8 shadow-lg shadow-primary/10">
+      <div className="flex items-center gap-3 mb-4">
+        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/25">
+          <Sparkles className="h-6 w-6 text-primary-light" />
+        </div>
+        <span className="font-semibold text-lg text-white">AI Agriculture Assistant</span>
       </div>
 
-      <div className="mt-4 flex-1 space-y-3 overflow-y-auto max-h-64 pr-1">
+      <div className="mt-2 flex-1 space-y-4 overflow-y-auto max-h-96 pr-2">
         {messages.map((msg, index) => (
           <div
             key={`${msg.role}-${index}`}
-            className={`rounded-2xl px-4 py-3 text-sm ${
+            className={`rounded-2xl px-5 py-4 text-sm transition-all ${
               msg.role === 'user'
-                ? 'ml-8 bg-primary/30 text-white'
-                : 'mr-4 border border-white/10 bg-white/5 text-muted'
+                ? 'ml-8 bg-primary/30 text-white font-medium'
+                : 'mr-2 border border-primary/20 bg-white/[0.05] text-muted'
             }`}
           >
-            <p className="whitespace-pre-wrap text-white/90">{msg.text}</p>
+            <p className="whitespace-pre-wrap text-white/90 leading-relaxed">{msg.text}</p>
           </div>
         ))}
         {loading && (
-          <div className="flex items-center gap-2 text-sm text-muted">
-            <Loader2 className="h-4 w-4 animate-spin" />
-            Thinking…
+          <div className="flex items-center gap-2 text-sm text-primary-light">
+            <Loader2 className="h-5 w-5 animate-spin" />
+            <span>AI is thinking…</span>
           </div>
         )}
       </div>
 
-      <div className="mt-3 flex flex-wrap gap-2">
-        {starters.map((prompt) => (
+      <div className="mt-4 flex flex-wrap gap-2">
+        {quickPrompts.map((prompt) => (
           <button
             key={prompt}
             type="button"
             onClick={() => sendMessage(prompt)}
-            className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-muted transition hover:border-primary/30 hover:text-white"
+            className="rounded-full border border-primary/20 bg-primary/10 px-4 py-2 text-xs text-muted transition hover:border-primary/40 hover:text-primary-light hover:bg-primary/15"
           >
             {prompt}
           </button>
@@ -91,7 +92,7 @@ export default function AIAssistant({ profile = {} }) {
       </div>
 
       <form
-        className="mt-4 flex gap-2"
+        className="mt-4 flex gap-3"
         onSubmit={(e) => {
           e.preventDefault();
           sendMessage(input);
@@ -100,15 +101,15 @@ export default function AIAssistant({ profile = {} }) {
         <input
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="Ask about crops, disease, schemes…"
-          className="flex-1 rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white outline-none focus:border-primary/40"
+          placeholder="Ask about crops, disease, schemes, weather…"
+          className="flex-1 rounded-xl border border-primary/20 bg-white/8 px-5 py-3 text-sm text-white outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/30 transition"
         />
         <button
           type="submit"
           disabled={loading || !input.trim()}
-          className="flex items-center justify-center rounded-xl bg-primary px-4 text-white transition hover:bg-primary/90 disabled:opacity-50"
+          className="flex items-center justify-center rounded-xl bg-gradient-to-r from-primary to-primary-light px-6 py-3 text-white font-medium transition hover:shadow-lg hover:shadow-primary/50 disabled:opacity-50 disabled:shadow-none"
         >
-          <Send className="h-4 w-4" />
+          <Send className="h-5 w-5" />
         </button>
       </form>
     </div>

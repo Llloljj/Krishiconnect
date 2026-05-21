@@ -26,7 +26,7 @@ export default function HowItWorks() {
           initial="hidden"
           animate={inView ? 'visible' : 'hidden'}
         >
-          <div className="absolute left-0 right-0 top-24 hidden h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent md:block" />
+          <div className="absolute left-0 right-0 top-24 hidden h-px bg-gradient-to-r from-transparent via-primary/25 to-transparent md:block" />
 
           <div className="grid gap-12 md:grid-cols-3 md:gap-8">
             {howItWorksSteps.map((item, index) => {
@@ -37,7 +37,7 @@ export default function HowItWorks() {
                   variants={fadeUp}
                   className="relative text-center"
                 >
-                  <div className="relative mx-auto flex h-20 w-20 items-center justify-center rounded-2xl border border-white/10 bg-surface ring-4 ring-background">
+                  <div className="relative mx-auto flex h-20 w-20 items-center justify-center rounded-2xl border border-white/8 bg-surface ring-4 ring-background">
                     <Icon className="h-8 w-8 text-primary-light" />
                     <span className="absolute -right-2 -top-2 flex h-8 w-8 items-center justify-center rounded-full bg-primary text-xs font-bold text-white">
                       {item.step}

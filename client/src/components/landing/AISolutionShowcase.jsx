@@ -13,7 +13,7 @@ export default function AISolutionShowcase() {
   return (
     <section id="solution" className="section-padding relative overflow-hidden" ref={ref}>
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute left-0 top-1/2 h-96 w-96 -translate-y-1/2 rounded-full bg-primary/10 blur-[120px]" />
+        <div className="absolute left-0 top-1/2 h-96 w-96 -translate-y-1/2 rounded-full bg-primary/8 blur-[100px]" />
       </div>
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -38,7 +38,7 @@ export default function AISolutionShowcase() {
             />
             <motion.div className="image-overlay absolute inset-0" />
             <motion.div className="absolute inset-0 flex flex-col justify-end p-8">
-              <span className="inline-flex w-fit items-center gap-2 rounded-full bg-primary/20 px-3 py-1 text-xs font-semibold text-primary-light ring-1 ring-primary/30">
+              <span className="inline-flex w-fit items-center gap-2 rounded-full bg-primary/15 px-3 py-1 text-xs font-semibold text-primary-light ring-1 ring-primary/20">
                 <Sparkles className="h-3.5 w-3.5" />
                 AI-Powered
               </span>
@@ -59,7 +59,7 @@ export default function AISolutionShowcase() {
                 <motion.div
                   key={item.title}
                   variants={fadeUp}
-                  className="group flex items-center gap-6 rounded-2xl border border-white/8 bg-white/[0.03] p-5 transition hover:border-primary/25 hover:bg-white/[0.06]"
+                  className="group flex items-center gap-6 rounded-2xl border border-white/8 bg-white/[0.03] p-5 transition hover:border-primary/20 hover:bg-white/[0.06]"
                   whileHover={{ x: 4 }}
                 >
                   <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/15 font-heading text-lg font-bold text-primary-light">

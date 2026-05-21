@@ -21,7 +21,7 @@ export default function CTABanner() {
             loading="lazy"
           />
           <div className="image-overlay absolute inset-0" />
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(46,125,50,0.2),transparent_70%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(46,125,50,0.08),transparent_70%)]" />
 
           <div className="relative px-8 py-24 text-center sm:px-16 sm:py-28">
             <h2 className="font-heading text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">

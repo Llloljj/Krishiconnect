@@ -17,7 +17,7 @@ export default function AIMatchingEngine() {
       className="section-padding relative overflow-hidden"
       ref={ref}
     >
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(46,125,50,0.12),transparent_70%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(46,125,50,0.06),transparent_70%)]" />
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionHeader
@@ -27,7 +27,7 @@ export default function AIMatchingEngine() {
         />
 
         <motion.div
-          className="mt-20 overflow-hidden rounded-3xl cinematic-border border border-white/10 bg-gradient-to-br from-surface to-background p-8 sm:p-12 lg:p-16"
+          className="mt-20 overflow-hidden rounded-3xl cinematic-border border border-white/8 bg-surface p-8 sm:p-12 lg:p-16"
           initial={{ opacity: 0, y: 32 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.7 }}
@@ -36,7 +36,7 @@ export default function AIMatchingEngine() {
             <div className="flex flex-col items-center">
               <ProgressRing score={87} size={200} stroke={12} label="Farmer Match" />
               <motion.div
-                className="mt-8 flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-2"
+                className="mt-8 flex items-center gap-2 rounded-full border border-primary/20 bg-primary/8 px-4 py-2"
                 initial={{ opacity: 0 }}
                 animate={inView ? { opacity: 1 } : {}}
                 transition={{ delay: 0.6 }}
@@ -74,7 +74,7 @@ export default function AIMatchingEngine() {
 
               <motion.div
                 variants={fadeUp}
-                className="mt-8 rounded-2xl border border-white/8 bg-white/5 p-5"
+                className="mt-8 rounded-2xl border border-white/8 bg-white/[0.04] p-5"
               >
                 <div className="flex items-center gap-2">
                   <Brain className="h-5 w-5 text-primary-light" />

@@ -13,7 +13,7 @@ function StatCard({ stat, Icon, inView }) {
   return (
     <motion.div
       variants={fadeUp}
-      className="group rounded-3xl glass p-8 transition hover:shadow-2xl hover:shadow-primary/5 sm:p-10"
+      className="group rounded-3xl glass p-8 transition hover:shadow-lg hover:shadow-primary/5 sm:p-10"
       whileHover={{ y: -6 }}
     >
       <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-primary transition group-hover:bg-primary group-hover:text-white">

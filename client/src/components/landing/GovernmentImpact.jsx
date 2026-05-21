@@ -38,7 +38,7 @@ export default function GovernmentImpact() {
             <motion.div
               key={item.title}
               variants={fadeUp}
-              className="rounded-3xl border border-white/8 bg-white/5 p-8 text-center backdrop-blur-sm"
+              className="rounded-3xl border border-white/8 bg-white/[0.04] p-8 text-center backdrop-blur-sm transition hover:border-white/12 hover:bg-white/[0.06]"
             >
               <p className="font-heading text-4xl font-bold text-primary-light">{item.stat}</p>
               <h3 className="mt-4 font-heading text-lg font-semibold text-white">{item.title}</h3>

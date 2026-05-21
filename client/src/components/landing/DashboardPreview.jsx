@@ -50,8 +50,8 @@ export default function DashboardPreview() {
                 onClick={() => setActive(tab.id)}
                 className={`inline-flex items-center gap-2 rounded-2xl px-5 py-3 text-sm font-semibold transition ${
                   isActive
-                    ? 'bg-primary text-white shadow-lg shadow-primary/30'
-                    : 'border border-white/10 bg-white/5 text-muted hover:text-white'
+                    ? 'bg-primary text-white shadow-md shadow-primary/15'
+                    : 'border border-white/8 bg-white/[0.03] text-muted hover:text-white hover:border-white/12'
                 }`}
               >
                 <Icon className="h-4 w-4" />

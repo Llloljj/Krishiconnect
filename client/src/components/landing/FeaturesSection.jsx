@@ -39,13 +39,13 @@ export default function FeaturesSection() {
               <motion.article
                 key={feature.title}
                 variants={fadeUp}
-                className="group rounded-3xl glass p-8 transition hover:shadow-2xl hover:shadow-primary/5"
-                whileHover={{ y: -8 }}
+                className="group rounded-3xl nature-card p-8 transition hover:shadow-lg hover:shadow-primary/15"
+                whileHover={{ y: -6 }}
               >
-                <span className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-primary text-white shadow-lg shadow-primary/25 transition group-hover:scale-105">
+                <span className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-primary-light text-white shadow-md shadow-primary/20 transition group-hover:scale-105 group-hover:shadow-lg group-hover:shadow-primary/30">
                   <Icon className="h-7 w-7" />
                 </span>
-                <h3 className="mt-6 font-heading text-xl font-bold text-dark">
+                <h3 className="mt-6 font-heading text-xl font-bold text-white">
                   {feature.title}
                 </h3>
                 <p className="mt-3 text-base leading-relaxed text-muted">

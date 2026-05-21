@@ -11,7 +11,7 @@ export default function HeroDashboardMockup() {
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.9, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
     >
-      <div className="absolute -inset-6 rounded-[2.5rem] bg-gradient-to-br from-primary/20 via-transparent to-primary-light/10 blur-3xl" />
+      <div className="absolute -inset-6 rounded-[2.5rem] bg-gradient-to-br from-primary/10 via-transparent to-primary-light/5 blur-2xl" />
 
       <motion.div
         className="relative cinematic-border overflow-hidden rounded-3xl"
@@ -19,20 +19,20 @@ export default function HeroDashboardMockup() {
         transition={{ type: 'spring', stiffness: 200, damping: 24 }}
       >
         <motion.div
-          className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent"
-          animate={{ opacity: [0.3, 0.6, 0.3] }}
+          className="absolute inset-0 bg-gradient-to-br from-primary/3 to-transparent"
+          animate={{ opacity: [0.2, 0.4, 0.2] }}
           transition={{ duration: 6, repeat: Infinity }}
         />
 
-        <div className="relative bg-[#0a1410] p-5 sm:p-6 lg:p-7">
+        <div className="relative bg-[#0a0a0a] p-5 sm:p-6 lg:p-7">
           <motion.div className="flex items-center justify-between border-b border-white/8 pb-4">
             <motion.div className="flex items-center gap-2">
-              <span className="h-2.5 w-2.5 rounded-full bg-red-400/80" />
-              <span className="h-2.5 w-2.5 rounded-full bg-amber-400/80" />
-              <span className="h-2.5 w-2.5 rounded-full bg-emerald-400/80" />
+              <span className="h-2.5 w-2.5 rounded-full bg-red-400/60" />
+              <span className="h-2.5 w-2.5 rounded-full bg-amber-400/60" />
+              <span className="h-2.5 w-2.5 rounded-full bg-emerald-400/60" />
             </motion.div>
             <span className="text-xs font-medium text-muted">KrishiConnect Intelligence</span>
-            <span className="flex items-center gap-1.5 rounded-full bg-primary/15 px-2.5 py-1 text-[10px] font-semibold text-primary-light ring-1 ring-primary/25">
+            <span className="flex items-center gap-1.5 rounded-full bg-primary/12 px-2.5 py-1 text-[10px] font-semibold text-primary-light ring-1 ring-primary/20">
               <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-primary-light" />
               Live
             </span>
@@ -48,7 +48,7 @@ export default function HeroDashboardMockup() {
               return (
                 <motion.div
                   key={stat.label}
-                  className="rounded-2xl bg-white/5 p-4 ring-1 ring-white/8"
+                  className="rounded-2xl bg-white/[0.04] p-4 ring-1 ring-white/8"
                   initial={{ opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.35 + i * 0.1 }}

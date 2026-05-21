@@ -20,8 +20,10 @@ const footerLinks = {
 
 export default function Footer() {
   return (
-    <footer className="border-t border-white/8 bg-surface/50 pt-16 pb-8">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <footer className="relative border-t border-primary-light/15 bg-gradient-to-b from-surface/80 to-surface/50 pt-16 pb-8 overflow-hidden">
+      {/* Decorative background */}
+      <div className="absolute inset-0 opacity-30 organic-pattern pointer-events-none" />
+      <div className="relative">
         <div className="grid gap-12 lg:grid-cols-6">
           <div className="lg:col-span-2">
             <Link to="/" className="flex items-center gap-2">
@@ -79,7 +81,7 @@ export default function Footer() {
           ))}
         </div>
 
-        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-white/8 pt-8 sm:flex-row">
+        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-primary-light/15 pt-8 sm:flex-row">
           <p className="text-xs text-muted">
             © {new Date().getFullYear()} KrishiConnect. All rights reserved.
           </p>

@@ -16,7 +16,7 @@ export default function CompanyPreview() {
           return (
             <div
               key={item.label}
-              className="rounded-2xl border border-white/8 bg-white/5 p-4"
+              className="rounded-2xl border border-white/8 bg-white/[0.04] p-4 transition hover:border-white/12 hover:bg-white/[0.06]"
             >
               <Icon className="h-4 w-4 text-primary-light" />
               <p className="mt-3 text-[10px] uppercase tracking-wider text-muted">{item.label}</p>
@@ -26,7 +26,7 @@ export default function CompanyPreview() {
         })}
       </div>
 
-      <div className="rounded-2xl border border-white/8 bg-white/5 p-4 lg:col-span-4">
+      <div className="rounded-2xl border border-white/8 bg-white/[0.04] p-4 lg:col-span-4">
         <p className="text-xs font-semibold uppercase tracking-wider text-muted">AI demand prediction</p>
         <div className="mt-2">
           <MiniLineChart points={[18, 24, 22, 35, 32, 48, 44, 58, 55]} />
@@ -34,20 +34,20 @@ export default function CompanyPreview() {
         <p className="mt-2 text-sm font-semibold text-primary-light">Wheat procurement up 22%</p>
       </div>
 
-      <div className="rounded-2xl border border-white/8 bg-white/5 p-4 lg:col-span-7">
+      <div className="rounded-2xl border border-white/8 bg-white/[0.04] p-4 lg:col-span-7">
         <p className="text-xs font-semibold uppercase tracking-wider text-muted">Supply insights</p>
         <div className="mt-3 h-24">
           <AnimatedBarChart data={[50, 62, 58, 75, 68, 82, 78]} />
         </div>
       </div>
 
-      <div className="rounded-2xl border border-white/8 bg-white/5 p-4 lg:col-span-5">
+      <div className="rounded-2xl border border-white/8 bg-white/[0.04] p-4 lg:col-span-5">
         <p className="text-xs font-semibold uppercase tracking-wider text-muted">Farmer discovery</p>
         <ul className="mt-3 space-y-2">
           {['Nashik cluster — 94% match', 'Punjab wheat belt — 88% match'].map((c) => (
             <li
               key={c}
-              className="flex items-center justify-between rounded-xl bg-white/5 px-3 py-2 text-sm"
+              className="flex items-center justify-between rounded-xl bg-white/[0.04] px-3 py-2 text-sm"
             >
               <span className="font-medium text-white">{c}</span>
               <span className="text-xs font-semibold text-primary-light">View</span>

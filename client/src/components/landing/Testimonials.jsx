@@ -27,11 +27,11 @@ export default function Testimonials() {
             <motion.blockquote
               key={t.name}
               variants={fadeUp}
-              className="flex flex-col rounded-3xl border border-white/8 bg-white/[0.03] p-8"
+              className="flex flex-col rounded-3xl border border-white/8 bg-white/[0.04] p-8 transition hover:border-white/12 hover:bg-white/[0.06]"
             >
               <p className="flex-1 text-base leading-relaxed text-muted">&ldquo;{t.quote}&rdquo;</p>
               <footer className="mt-8 flex items-center gap-4 border-t border-white/8 pt-6">
-                <span className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/20 text-sm font-bold text-primary-light">
+                <span className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/15 text-sm font-bold text-primary-light">
                   {t.initials}
                 </span>
                 <div>

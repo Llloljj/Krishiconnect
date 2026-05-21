@@ -31,14 +31,14 @@ export default function CoreFeaturesSection() {
             <motion.article
               key={feature.title}
               variants={fadeUp}
-              className={`relative rounded-3xl border p-8 transition ${
+              className={`relative rounded-3xl border p-8 transition nature-card ${
                 feature.highlight
-                  ? 'border-primary/30 bg-gradient-to-br from-primary/15 to-transparent ring-1 ring-primary/20'
-                  : 'border-white/8 bg-white/[0.03] hover:border-white/15'
+                  ? 'border-primary-light/35 bg-gradient-to-br from-primary/15 to-primary-light/5'
+                  : 'border-primary-light/15'
               }`}
             >
               {feature.highlight && (
-                <span className="absolute right-6 top-6 flex items-center gap-1 rounded-full bg-primary/20 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-primary-light">
+                <span className="absolute right-6 top-6 flex items-center gap-1 rounded-full bg-primary-light/20 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-primary-light">
                   <Star className="h-3 w-3 fill-current" />
                   Core
                 </span>
@@ -72,7 +72,7 @@ export default function CoreFeaturesSection() {
             <motion.div
               key={feature.title}
               variants={fadeUp}
-              className="rounded-2xl border border-white/8 bg-white/[0.02] px-6 py-5"
+              className="rounded-2xl border nature-border bg-gradient-to-br from-primary/8 to-primary-light/3 px-6 py-5 nature-card"
             >
               <h3 className="font-heading text-base font-semibold text-white">{feature.title}</h3>
               <p className="mt-2 text-sm text-muted">{feature.description}</p>

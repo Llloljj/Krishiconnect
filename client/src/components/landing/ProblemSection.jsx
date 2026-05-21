@@ -12,7 +12,7 @@ export default function ProblemSection() {
 
   return (
     <section id="problem" className="section-padding relative overflow-hidden" ref={ref}>
-      <div className="absolute inset-0 bg-surface/50" />
+      <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent organic-pattern" />
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionHeader
@@ -23,7 +23,7 @@ export default function ProblemSection() {
 
         <div className="mt-20 grid items-center gap-16 lg:grid-cols-2 lg:gap-24">
           <motion.div
-            className="relative aspect-[4/5] overflow-hidden rounded-3xl cinematic-border"
+            className="relative aspect-[4/5] overflow-hidden rounded-3xl nature-border organic-shadow"
             initial={{ opacity: 0, x: -32 }}
             animate={inView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.7 }}
@@ -36,7 +36,7 @@ export default function ProblemSection() {
             />
             <div className="image-overlay absolute inset-0" />
             <motion.div
-              className="absolute bottom-6 left-6 right-6 glass rounded-2xl p-5"
+              className="absolute bottom-6 left-6 right-6 glass-plant rounded-2xl p-5"
               initial={{ opacity: 0, y: 20 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.3 }}

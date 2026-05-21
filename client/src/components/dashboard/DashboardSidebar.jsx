@@ -5,9 +5,9 @@ export default function DashboardSidebar({ links, title }) {
   const { pathname } = useLocation();
 
   return (
-    <aside className="flex h-full w-64 flex-col border-r border-white/8 bg-surface">
-      <Link to="/" className="flex items-center gap-2.5 border-b border-white/8 px-6 py-5">
-        <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary/20 text-primary-light">
+    <aside className="flex h-full w-64 flex-col border-r border-primary-light/15 bg-gradient-to-b from-surface to-surface/80">
+      <Link to="/" className="flex items-center gap-2.5 border-b border-primary-light/15 px-6 py-5 hover:bg-primary/10 transition">
+        <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-primary/20 to-primary-light/10 text-primary-light">
           <Sprout className="h-4 w-4" />
         </span>
         <span className="font-heading text-lg font-bold text-white">
@@ -29,8 +29,8 @@ export default function DashboardSidebar({ links, title }) {
               to={link.path}
               className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition ${
                 active
-                  ? 'bg-primary/15 text-primary-light'
-                  : 'text-muted hover:bg-white/5 hover:text-white'
+                  ? 'bg-gradient-to-r from-primary/20 to-primary-light/10 text-primary-light border border-primary-light/20'
+                  : 'text-muted hover:bg-primary/5 hover:text-primary-light'
               }`}
             >
               <Icon className="h-4 w-4" />
@@ -40,7 +40,7 @@ export default function DashboardSidebar({ links, title }) {
         })}
       </nav>
 
-      <div className="border-t border-white/8 p-4">
+      <div className="border-t border-primary-light/15 p-4">
         <Link
           to="/"
           className="flex items-center gap-2 rounded-xl px-3 py-2.5 text-sm font-medium text-muted hover:bg-white/5 hover:text-white"

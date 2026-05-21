@@ -1,6 +1,6 @@
 export default function DataTable({ title, columns, rows }) {
   return (
-    <div className="rounded-3xl border border-white/8 bg-white/5 p-6 backdrop-blur-sm">
+    <div className="rounded-3xl border border-white/8 bg-white/[0.04] p-7 backdrop-blur-sm">
       {title && (
         <p className="mb-4 text-xs font-semibold uppercase tracking-wider text-muted">{title}</p>
       )}
@@ -17,7 +17,7 @@ export default function DataTable({ title, columns, rows }) {
           </thead>
           <tbody>
             {rows.map((row) => (
-              <tr key={row.id} className="border-b border-white/5 last:border-0">
+              <tr key={row.id} className="border-b border-white/6 last:border-0">
                 {row.cells.map((cell, i) => (
                   <td key={i} className="py-3 pr-4 text-white">
                     {cell}
